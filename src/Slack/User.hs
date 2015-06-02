@@ -1,4 +1,4 @@
-module Web.Slack.User
+module Slack.User
        (
          User(..),
          users,
@@ -7,7 +7,7 @@ module Web.Slack.User
        )
        where
 
-import Web.Slack.Types (User(..), Slack(..), users)
+import Slack.Types (User(..), Slack(..), users)
 
 import Data.List (find)
 import Text.Printf (printf)
@@ -30,4 +30,3 @@ userFromName uname = do
   case maybeUser of
    Nothing   -> Slack . hoistEither . Left . printf "Could not find user with name: %s" $ uname
    Just user -> Slack . hoistEither $ Right user
-

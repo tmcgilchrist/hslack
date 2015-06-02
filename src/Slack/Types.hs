@@ -1,4 +1,4 @@
-module Web.Slack.Types
+module Slack.Types
        (
          SlackError,
          parseStrippedPrefix,
@@ -18,7 +18,7 @@ module Web.Slack.Types
        )
        where
 
-import           Web.Slack.Prelude
+import           Slack.Prelude
 
 import           Data.Char (toLower)
 import           Data.List (stripPrefix)
@@ -125,7 +125,7 @@ request command args = do
   -- Construct the proper API url
   url <- buildURL command args
   -- Retrieve the raw JSON Data
-  raw <- liftIO (simpleHttp url) 
+  raw <- liftIO (simpleHttp url)
   -- Parse it into a SlackResponse object
   resp <- Slack . hoistEither . eitherDecode $ raw
   -- Merge the Either inside the SlackResponse with the EitherT in the Slack monad stack

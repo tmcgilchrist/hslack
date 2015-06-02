@@ -1,4 +1,4 @@
-module Web.Slack.Prelude
+module Slack.Prelude
        (
          (<$>),
          (<*>),
@@ -19,7 +19,7 @@ module Web.Slack.Prelude
 import Control.Applicative((<$>), (<*>))
 
 import Data.Aeson (FromJSON(..), Value(..), (.:), eitherDecode)
-  
+
 import GHC.Generics (Generic)
 import Data.Text (Text, unpack)
 
