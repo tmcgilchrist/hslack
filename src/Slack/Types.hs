@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleContexts #-}
+
 module Slack.Types
        (
          SlackError,
@@ -19,13 +21,13 @@ module Slack.Types
        where
 
 import           Slack.Prelude
-
+import           GHC.Generics
 import           Data.Char (toLower)
 import           Data.List (stripPrefix)
 import qualified Data.Map as M
 
-import           Data.Aeson (genericParseJSON)
-import           Data.Aeson.Types (Options(..), defaultOptions)
+import           Data.Aeson
+import           Data.Aeson.Types
 
 import           Network.HTTP.Conduit (simpleHttp)
 
@@ -68,6 +70,8 @@ newtype Slack a = Slack {runSlackInternal :: EitherT SlackError (StateT SlackSta
                   deriving (Functor, Applicative, Monad, MonadIO, MonadState SlackState)
 
 -- |Parses a record from a JSON object by stripping the given prefix off of each field
+
+parseStrippedPrefix :: (GFromJSON (GHC.Generics.Rep a), Generic a) => [Char] -> Value -> Parser a
 parseStrippedPrefix prefix = genericParseJSON (defaultOptions {fieldLabelModifier = uncamel})
   where
     --  Removes a prefix from a string, and lowercases the first letter of the resulting string

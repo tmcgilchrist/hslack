@@ -53,6 +53,22 @@ initialize () {
         cabal sandbox ${SANDBOX:-} init
     }
 
+    [ ! -f "$project.submodules" ] || {
+        # submodules initialized if required, the "has it been done before" is pretty crude, but check is useful.
+        cat $project.submodules | while read submodule; do
+            find "$submodule" -maxdepth 2 -name \*.cabal
+        done | grep -q . || (
+            cd $(git rev-parse --show-toplevel)
+            git submodule init
+            git submodule update
+        )
+
+        cat $project.submodules | while read submodule; do
+            # ideally this would be conditional but yeh, stuff
+            cabal sandbox add-source ${SANDBOX:-} "$submodule"
+        done
+    }
+
     # all dependencies installed, and configure been run?
     cabal install -j --only-dependencies --force-reinstalls --enable-tests
     cabal configure --enable-tests

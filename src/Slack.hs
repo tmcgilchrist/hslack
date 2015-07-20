@@ -1,11 +1,9 @@
 module Slack (
-    module Slack.Api
-  , module Slack.Data
-  , runPagerduty
+  module X
   ) where
 
-import Slack.Channel
-import Slack.Message
-import Slack.Prelude
-import Slack.Types
-import Slack.User
+import Slack.Channel as X
+import Slack.Message as X
+import Slack.Prelude as X
+import Slack.Types as X
+import Slack.User as X
